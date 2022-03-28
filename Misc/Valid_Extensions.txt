@@ -30,3 +30,6 @@
 .obj
 .apk
 .app
+.ass
+.otf
+.ttf
