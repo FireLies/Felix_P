@@ -6,7 +6,7 @@ import argparse
 
 
 print("""\nHello Felix_P! -| v1.2 |- FireLies 2022 -> https://github.com/FireLies/Felix_P
-\nUsage: py felix.py [(opt) -r] [--type <list>] [(opt) --path <str>]""")
+\nUsage: py felix.py [(opt) -r] [--type <list>] [(opt) --path <str>]\n""")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-r", nargs='?', const=True, default=False)
@@ -22,7 +22,7 @@ with open('.\\Misc\\Valid_Extensions.txt', 'r') as valid:
     ValidType = valid.read().split("\n")
 
 if not args.type:
-    print("\n--Warning: [--type] is required. At least one value given. Usage: py felix.py --type <list>\n--Example: py felix.py --type .txt, .jpg\n")
+    print("\n--Warning: [--type] is required. At least one value given\n--Example: py felix.py --type .txt, .jpg\n")
     sys.exit(0)
 
 CheckType = [i for i in args.type if i not in ValidType]
@@ -46,20 +46,19 @@ stw_Start = time.time()
 removed, failed = 0, 0
 
 for ext in args.type:
-    print(f"\n--Trying: {ext} in {RawPath}")
     CheckFile = glob.glob(RawPath + "\\**\\*" + ext, recursive=args.r)
     for counter, files in enumerate(CheckFile, start=1):
         with open(files, 'w') as content:
             content.write("")
 
         if os.path.getsize(files) > 0:
-            print(f"  . {files}")
             failed += 1
         removed += 1
-
     if len(CheckFile) == 0:
         counter = 0
-    print(f"--Found: {counter}")
+    
+    CheckSize = '\n  . '.join(['', *[i for i in CheckFile if os.path.getsize(i) > 0]])
+    print(f"--Trying: {ext}, found {counter}{CheckSize}")
 
 stw_Result = str(round((time.time() - stw_Start) * 1000, 3))
-print(f"\n--Finished in: {stw_Result} ms | File(s): {removed + failed} | Removed: {removed} | Failed: {failed}\n")
+print(f"\nFinished in: {stw_Result} ms | File(s): {removed + failed} | Removed: {removed} | Failed: {failed}\n")
